@@ -19,7 +19,7 @@ open class PasswordContainerView: UIView {
     @IBOutlet open var passwordInputViews: [PasswordInputView]!
     @IBOutlet open weak var passwordDotView: PasswordDotView!
     @IBOutlet weak var deleteButton: UIButton!
-    @IBOutlet weak var touchAuthenticationButton: UIButton!
+    @IBOutlet open weak var touchAuthenticationButton: UIButton!
     
     //MARK: Property
     open var deleteButtonLocalizedTitle: String = "" {
@@ -138,29 +138,11 @@ open class PasswordContainerView: UIView {
         deleteButton.titleLabel?.adjustsFontSizeToFitWidth = true
         deleteButton.titleLabel?.minimumScaleFactor = 0.5
         touchAuthenticationEnabled = true
-        configureImage()
-        authenticateWithBiometricsIfNeeded()
-    }
-    
-    private func configureImage() {
         touchAuthenticationButton.tintColor = tintColor
-        func setStandardImage() {
-            let image = touchAuthenticationButton.imageView?.image?.withRenderingMode(.alwaysTemplate)
-            touchAuthenticationButton.setImage(image, for: UIControlState())
-        }
+        let image = touchAuthenticationButton.imageView?.image?.withRenderingMode(.alwaysTemplate)
+        touchAuthenticationButton.setImage(image, for: UIControlState())
 
-        if #available(iOS 11.0, *) {
-            let context = LAContext()
-            context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
-            switch context.biometryType {
-            case .faceID:
-                touchAuthenticationButton.setImage(#imageLiteral(resourceName: "Face"), for: .normal)
-            default:
-                setStandardImage()
-            }
-        } else {
-            setStandardImage()
-        }
+        authenticateWithBiometricsIfNeeded()
     }
     
     private func authenticateWithBiometricsIfNeeded() {
