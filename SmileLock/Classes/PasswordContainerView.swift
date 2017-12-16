@@ -80,9 +80,7 @@ open class PasswordContainerView: UIView {
     }
     
     open var touchAuthenticationReason = "Touch to unlock"
-    
-    open var shouldAuthenticateWithBiometricsAutomatically = true
-    
+        
     //MARK: AutoLayout
     open var width: CGFloat = 0 {
         didSet {
@@ -141,16 +139,9 @@ open class PasswordContainerView: UIView {
         touchAuthenticationButton.tintColor = tintColor
         let image = touchAuthenticationButton.imageView?.image?.withRenderingMode(.alwaysTemplate)
         touchAuthenticationButton.setImage(image, for: UIControlState())
-
-        authenticateWithBiometricsIfNeeded()
     }
     
-    private func authenticateWithBiometricsIfNeeded() {
-        if !shouldAuthenticateWithBiometricsAutomatically { return }
-        authenticateWithBiometrics()
-    }
-    
-    private func authenticateWithBiometrics() {
+    open func authenticateWithBiometrics() {
         guard isTouchAuthenticationAvailable else { return }
         touchIDContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: touchAuthenticationReason) { (success, error) in
             DispatchQueue.main.async { [weak self] in
