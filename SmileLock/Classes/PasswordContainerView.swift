@@ -81,7 +81,7 @@ open class PasswordContainerView: UIView {
     
     open var touchAuthenticationReason = "Touch to unlock"
     
-    open var shouldAuthenticateWithBiometricsAutomatically = false
+    open var shouldAuthenticateWithBiometricsAutomatically = true
     
     //MARK: AutoLayout
     open var width: CGFloat = 0 {
