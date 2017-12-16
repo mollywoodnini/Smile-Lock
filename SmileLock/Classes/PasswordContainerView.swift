@@ -154,7 +154,7 @@ open class PasswordContainerView: UIView {
             context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
             switch context.biometryType {
             case .faceID:
-                touchAuthenticationButton.setImage(#imageLiteral(resourceName: "Face").withRenderingMode(.alwaysTemplate), for: .normal)
+                touchAuthenticationButton.setImage(#imageLiteral(resourceName: "Face"), for: .normal)
             default:
                 setStandardImage()
             }
