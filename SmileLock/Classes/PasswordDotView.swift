@@ -91,26 +91,29 @@ open class PasswordDotView: UIView {
         } else {
             moveX *= 2
         }
-        shakeAnimation(withDuration: duration, animations: {
-            if !self.direction {
-                self.center = CGPoint(x: centerX + moveX, y: centerY)
+        shakeAnimation(withDuration: duration, animations: { [weak self] in
+            guard let strongSelf = self else { return }
+            if !strongSelf.direction {
+                strongSelf.center = CGPoint(x: centerX + moveX, y: centerY)
             } else {
-                self.center = CGPoint(x: centerX - moveX, y: centerY)
+                strongSelf.center = CGPoint(x: centerX - moveX, y: centerY)
             }
-        }) {
-            if self.shakeCount >= maxShakeCount {
-                self.shakeAnimation(withDuration: duration, animations: {
-                    let realCenterX = self.superview!.bounds.midX
-                    self.center = CGPoint(x: realCenterX, y: centerY)
+        }) { [weak self] in
+            guard let strongSelf = self else { return }
+            if strongSelf.shakeCount >= maxShakeCount {
+                strongSelf.shakeAnimation(withDuration: duration, animations: { [weak self] in
+                    guard let strongSelf = self else { return }
+                    let realCenterX = strongSelf.superview!.bounds.midX
+                    strongSelf.center = CGPoint(x: realCenterX, y: centerY)
                 }) {
-                    self.direction = false
-                    self.shakeCount = 0
+                    strongSelf.direction = false
+                    strongSelf.shakeCount = 0
                     completion()
                 }
             } else {
-                self.shakeCount += 1
-                self.direction = !self.direction
-                self.shakeAnimationWithCompletion(completion)
+                strongSelf.shakeCount += 1
+                strongSelf.direction = !strongSelf.direction
+                strongSelf.shakeAnimationWithCompletion(completion)
             }
         }
     }

@@ -166,23 +166,28 @@ private extension PasswordInputView {
     
     func touchDownAnimation() {
         isAnimating = true
-        tappedAnimation(animations: { 
-            self.touchDownAction()
-        }) {
-            if self.touchUpFlag {
-                self.touchUpAnimation()
+        tappedAnimation(animations: { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.touchDownAction()
+        }) { [weak self] in
+            guard let strongSelf = self else { return }
+
+            if strongSelf.touchUpFlag {
+                strongSelf.touchUpAnimation()
             } else {
-                self.isAnimating = false
+                strongSelf.isAnimating = false
             }
         }
     }
     
     func touchUpAnimation() {
         isAnimating = true
-        tappedAnimation(animations: { 
-            self.touchUpAction()
-        }) {
-            self.isAnimating = false
+        tappedAnimation(animations: { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.touchUpAction()
+        }) {[weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.isAnimating = false
         }
     }
     
